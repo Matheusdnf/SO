@@ -113,7 +113,7 @@ void * leitor(void * id)
     // variavel interna à thread para armazenar o valor compartilhado
     int shared_in;
 
-    printf("> Leitor %d tentando acesso\n",i);
+    printf("> Leitor %ld tentando acesso\n",i);
 
     //
     // TODO: precisa fazer o controle de acesso à entrada do leitor
@@ -123,17 +123,17 @@ void * leitor(void * id)
     sem_wait(&wrt);
 
 
-    printf("> Leitor %d conseguiu acesso\n",i);
+    printf("> Leitor %ld conseguiu acesso\n",i);
     readcount++;
     sem_post (&mutex);
     
         
         // leitor acessando o valor de shared
-        printf("\t> Leitor %d acessando\n", i);
+        printf("\t> Leitor %ld acessando\n", i);
         shared_in = shared;
         usleep(gera_rand(1000000));
 
-        printf("\t> Leitor %d - tmp: %d - shared: %d - readcount: %d\n",
+        printf("\t> Leitor %ld - tmp: %d - shared: %d - readcount: %d\n",
                 i, shared_in, shared, readcount);
 
         if (shared_in != shared)
@@ -153,7 +153,7 @@ void * leitor(void * id)
     sem_post (&wrt);
     sem_post (&mutex) ;
 
-    printf("< Leitor %d liberando acesso\n",i);
+    printf("< Leitor %ld liberando acesso\n",i);
 
 
 }
@@ -165,7 +165,7 @@ void * escritor(void * id)
     // convertendo o Id do leitor para int
     long i = (long)id;
 
-    printf("+ Escritor %d tentando acesso\n",i);
+    printf("+ Escritor %ld tentando acesso\n",i);
 
     //
     // TODO: precisa controlar o acesso do escritor ao recurso
@@ -173,7 +173,7 @@ void * escritor(void * id)
     sem_wait(&wrt);
 
 
-    printf("\t+ Escritor %d conseguiu acesso\n",i);
+    printf("\t+ Escritor %ld conseguiu acesso\n",i);
 
     if (readcount > 0)
     {
@@ -183,7 +183,7 @@ void * escritor(void * id)
     }
 
     int rnd = gera_rand(100);
-    printf("\t+ Escritor %d gravando o valor %d em shared\n", i, rnd);
+    printf("\t+ Escritor %ld gravando o valor %d em shared\n", i, rnd);
     usleep(gera_rand(1000000));
 
 
@@ -196,7 +196,7 @@ void * escritor(void * id)
     //
     sem_post(&wrt);
     
-    printf("+ Escritor %d saindo\n",i);
+    printf("+ Escritor %ld saindo\n",i);
 }
 
 int gera_rand(int limit)
